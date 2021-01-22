@@ -1,0 +1,2 @@
+# GosAutoBot
+Just project
