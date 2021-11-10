@@ -1,8 +1,13 @@
 #include <Wire.h>
 #include <Multiservo.h>
 
-Multiservo wrist;
+Multiservo wrist, sholder, rsholder, bicep, rbicep;
 Multiservo thumb, index, middle, ring, pinky; 
+
+//bicep min = 47; max = 120;
+//rsholder min = 90; max = 180;
+//rbicep mid = 90; min = 0; max = 105
+//sholder min = 90; max = 180;
 
 #define MAXI 180
 #define MINI 0
@@ -17,6 +22,10 @@ void servosAttach()
   middle.attach(2);
   ring.attach(3);
   pinky.attach(4);
+  rsholder.attach(16);
+  sholder.attach(14);
+  bicep.attach(13);
+  rbicep.attach(15);
 }
 
 void servosDetach()
@@ -27,6 +36,19 @@ void servosDetach()
   middle.detach();
   ring.detach();
   pinky.detach();
+  rsholder.detach();
+  sholder.detach();
+  bicep.detach();
+  rbicep.detach();
+}
+
+void startPose()
+{
+  bicep.write(47);
+  rsholder.write(90);
+  rbicep.write(90);
+  sholder.write(90);
+  delay(1000);
 }
 
 void setup(void)
@@ -34,7 +56,8 @@ void setup(void)
   Wire.begin();
   
   servosAttach();
-  
+  startPose();
+  /*
   for (pos = MINI; pos <= MAXI; pos += 1) // goes from 0 degrees to 180 degrees
   { // in steps of 1 degree
     foo(pos);
@@ -44,23 +67,37 @@ void setup(void)
   {
     foo(pos);
     delay(15);                       // waits 15ms for the servo to reach the position
-  }
-  pos = 90;
+  }*/
+  pos = MINI;
+  //bicep.write(47);
+  
   foo(pos);
-  servosDetach();
+  //servosDetach();
 }
 
 void foo(int pos)
 {
     wrist.write(pos);    // tell servo to go to position in variable 'pos'
-    thumb.write(MAXI - pos);
-    index.write(pos);
-    middle.write(MAXI - pos);
-    ring.write(pos);
-    pinky.write(pos);
+    thumb.write(pos);
+    index.write(MAXI - pos);
+    middle.write(pos);
+    ring.write(MAXI - pos);
+    pinky.write(MAXI - pos);
 }
 
 void loop(void)
 {
   
 }
+
+/*class limb
+{
+  private:
+  limb(int servPin, int maxval, int minval)
+  {
+    Multiservo
+  }
+  int maxi;
+  int mini;
+  public: 
+}*/

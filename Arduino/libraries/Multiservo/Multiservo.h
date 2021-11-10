@@ -1,60 +1,49 @@
-#ifndef MULTISERVO_H
-#define MULTISERVO_H
+#ifndef __MULTISERVO_H__
+#define __MULTISERVO_H__
 
-#include <inttypes.h>
+#include <Arduino.h>
+#include <Wire.h>
 
-class Multiservo
-{
+// I²C-address device
+#define MULTISERVO_I2C_ADDRESS_DEFAULT 0x47
+// Minimum and maximum pin of servos
+#define MULTISERVO_MIN_PIN_SERVO 0
+#define MULTISERVO_MAX_PIN_SERVO 18
+// Shortest and longest pulse sent to a servo
+#define MULTISERVO_MIN_PULSE_WIDTH 544
+#define MULTISERVO_MAX_PULSE_WIDTH 2400
+
+class Multiservo {
 public:
-  enum Error
-  {
-    OK = 0,
-    DATA_TOO_LONG,
-    NACK_ON_ADDRESS,
-    NACK_ON_DATA,
-    TWI_ERROR,
-    BAD_PIN,
-    BAD_PULSE
-  };
+    Multiservo(TwoWire& wire = Wire, uint8_t i2cAddress = MULTISERVO_I2C_ADDRESS_DEFAULT);
+    void attach(int pin);
+    void attach(int pin, int minPulse, int maxPulse);
+    void detach();
+    void write(int angle);
+    void writeMicroseconds(int pulse);
+    int read() const;
+    int readMicroseconds() const;
+    bool attached() const;
+    bool readVoltageCurrent();
+    uint16_t getVoltage() const;
+    uint16_t getCurrent() const;
 
-  Multiservo();
-  Multiservo(uint8_t twiAddress);
-
-  Error attach(int pin);
-  Error attach(int pin, int minPulse, int maxPulse);
-
-  Error detach();
-
-  Error write(int value);
-  Error writeMicroseconds(int pulseWidth);
-
-  int read() const;
-  bool attached() const;
-
-protected:
-  static const unsigned int  AddressDefault;
-  static const unsigned int  PulseMinDefault;
-  static const unsigned int  PulseMaxDefault;
-  static const unsigned int  nAttemptsDefault;
-  static const unsigned char PinInvalid;
-  static const unsigned int  nPinMax;
-  static const unsigned int  PulseMaxAbsolute;
-
-  uint8_t  m_iPin;
-  uint8_t  m_twiAddress;
-  uint16_t m_minPulse;
-  uint16_t m_maxPulse;
-  uint16_t m_pulseWidth;
-
-//private:
-public:
-  static Error writeMicroseconds(
-                                        uint8_t pin, uint16_t pulseWidth, 
-                                        uint8_t twiAddress, uint8_t retryAttempts
-                                      );
+private:
+    TwoWire* _wire;
+    void _writeByte(uint8_t regAddress, uint8_t data);
+    void _writeByte16(uint8_t regAddress, uint16_t data);
+    void _writeBytes(uint8_t regAddress, uint8_t* data, uint8_t length);
+    uint8_t _readByte(uint8_t regAddress);
+    uint16_t _readByte16(uint8_t regAddress);
+    bool _readBytes(uint8_t regAddress, uint8_t* data, uint8_t length);
+    uint8_t _i2cAddress;
+    uint8_t _pin;
+    uint16_t _pulse;
+    uint16_t _minPulse;
+    uint16_t _maxPulse;
+    uint16_t _voltage;
+    uint16_t _current;
+    bool _attached;
 };
 
-#endif
-
-// vim: sw=2 sts=2 ts=8:
-
+#endif // __MULTISERVO_H__
