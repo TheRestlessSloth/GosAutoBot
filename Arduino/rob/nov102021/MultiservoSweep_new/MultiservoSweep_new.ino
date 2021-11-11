@@ -15,15 +15,16 @@ Multiservo thumb, index, middle, ring, pinky;
 void servosAttach()
 {
   wrist.attach(17);
+  sholder.attach(14);
+  rsholder.attach(16);
+  bicep.attach(13);
+  rbicep.attach(15);
+  
   thumb.attach(0);
   index.attach(1);
   middle.attach(2);
   ring.attach(3);
   pinky.attach(4);
-  rsholder.attach(16);
-  sholder.attach(14);
-  bicep.attach(13);
-  rbicep.attach(15);
 }
 
 void servosDetach()
@@ -98,3 +99,5 @@ void loop(void)
   public: 
 
 }*/
+
+
