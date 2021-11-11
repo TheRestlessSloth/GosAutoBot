@@ -40,11 +40,13 @@ void setup(void)
     foo(pos);
     delay(15);                       // waits 15ms for the servo to reach the position
   }
+
   for (pos = MAXI; pos >= MINI; pos -= 1) // goes from 180 degrees to 0 degrees
   {
     foo(pos);
     delay(15);                       // waits 15ms for the servo to reach the position
   }
+  
   pos = 90;
   foo(pos);
   servosDetach();
