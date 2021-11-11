@@ -10,9 +10,7 @@ Multiservo thumb, index, middle, ring, pinky;
 //sholder min = 90; max = 180;
 
 #define MAXI 180
-#define MINI 0
-
-int pos = 0;  
+#define MINI 0 
 
 void servosAttach()
 {
@@ -44,6 +42,7 @@ void servosDetach()
 
 void startPose()
 {
+  wrist.write(90);
   bicep.write(47);
   rsholder.write(90);
   rbicep.write(90);
@@ -68,16 +67,13 @@ void setup(void)
     foo(pos);
     delay(15);                       // waits 15ms for the servo to reach the position
   }*/
-  pos = MINI;
   //bicep.write(47);
-  
-  foo(pos);
+  fingers_move((MAXI-MINI)/2);
   //servosDetach();
 }
 
-void foo(int pos)
-{
-    wrist.write(pos);    // tell servo to go to position in variable 'pos'
+void fingers_move(int pos)
+{ 
     thumb.write(pos);
     index.write(MAXI - pos);
     middle.write(pos);
@@ -93,11 +89,12 @@ void loop(void)
 /*class limb
 {
   private:
-  limb(int servPin, int maxval, int minval)
+  limb(string limb_name, int servo_pin, int max_val, int min_val)
   {
-    Multiservo
+    Multiservo limb_name
   }
   int maxi;
   int mini;
   public: 
+
 }*/
