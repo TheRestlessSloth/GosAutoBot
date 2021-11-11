@@ -2,8 +2,8 @@ import RPi.GPIO as IO
 import time
 
 IO.setwarnings(False)
-IO.setup(GPIO2,IO.IN)
-IO.setup(GPIO3,IO.OUT)
+IO.setup(GPIO23,IO.IN)
+IO.setup(GPIO24,IO.OUT)
 
 while 1:
 	IO.output(GPIO3,IO.HIGH)
